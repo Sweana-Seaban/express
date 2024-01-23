@@ -6,7 +6,6 @@ app.get('/',(req,res)=>{
     res.status(200).send('home page')
 })
 
-
 app.get('/about',(req,res)=>{
     console.log('get method')
     res.status(200).send('about page')
