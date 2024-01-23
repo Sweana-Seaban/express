@@ -1,9 +1,9 @@
 const express = require('express');
-const app = express()
+const app = express()//creates an express app
 
 app.get('/',(req,res)=>{
     console.log('get method')
-    res.status(200).send('home page')
+    res.status(200).send('home page')//send() sends http response
 })
 
 app.get('/about',(req,res)=>{
