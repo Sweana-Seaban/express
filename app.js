@@ -68,7 +68,7 @@ const {getAllNotes,getSinglenote,createNote, deleteNote,updateNote} = require('.
 // })
 
 
-app.use(express.json())
+app.use(express.json())//middleware for parsing json in the request body
 
 
 //select all
