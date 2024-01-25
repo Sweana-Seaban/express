@@ -1,7 +1,7 @@
 const express = require('express');
 
 const app = express()//creates an express app
-const {getAllNotes,getSinglenote,createNote} = require('./database')
+const {getAllNotes,getSinglenote,createNote, deleteNote,updateNote} = require('./database')
 
 
 // const {products} = require('./data')
@@ -70,21 +70,42 @@ const {getAllNotes,getSinglenote,createNote} = require('./database')
 
 app.use(express.json())
 
+
+//select all
 app.get('/notes',async(req,res) => {
     const notes =await getAllNotes()
     res.send(notes)
 })
 
+
+//select by id
 app.get('/notes/:id',async(req,res) => {
     const id = req.params.id
     const note = await getSinglenote(id)
     res.send(note)
 })
 
+
+//insert note
 app.post('/notes',async(req,res) => {
     const {title,description} = req.body
     const note =await createNote(title,description)
     res.status(201).send(note)
+})
+
+//delete note
+app.delete('/notes/:id',async(req,res) => {
+    const id = req.params.id
+    const deletedNote = await deleteNote(id)
+    res.send(deletedNote)
+})
+
+//update note
+app.put('/notes/:id',async(req,res) => {
+    const id = req.params.id
+    const {title,description} = req.body
+    const updatedNote = await updateNote(id,title,description)
+    res.send(updatedNote)
 })
 
 

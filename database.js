@@ -22,7 +22,9 @@ connection.connect(function (err) {
  });
 
  //if await is not used, before compeleting database operataion result is returned i.e, undefined will be returned
-const getAllNotes= async()=>{
+
+//select all
+ const getAllNotes= async()=>{
 const [rows] = await connection.query("SELECT * FROM notes")
 
 console.log(rows);
@@ -31,20 +33,44 @@ console.log(rows);
  //getAllNotes()
 
 
+ //select note based on id
 const getSinglenote = async(id) =>{
     const [row] = await connection.query(`SELECT * FROM notes WHERE id = ?`,[id])
-    console.log(row[0]);
+    return row[0]
  }
 
 //getSinglenote(1)
 
-
+//insert note
 const createNote =async(title,desc) =>{
-const result = await connection.query(`insert into notes(title,description) values(?,?)`,[title,desc])
+const [result] = await connection.query(`insert into notes(title,description) values(?,?)`,[title,desc])
+console.log(result)
 const id = result.insertId;
+console.log("Id of inserted row is:",id)
 return getSinglenote(id)
 }
 
+
+
+//delete note
+const deleteNote = async(id) => {
+    const [deletedRow] = await connection.query(`delete from notes where id = ?`,[id])
+    console.log(deletedRow)
+    const noOfAffectedRows = deletedRow.affectedRows
+    console.log("Number of affected rows:",noOfAffectedRows)
+    return [deletedRow]
+}
+
+//update note
+const updateNote = async(id,title,description) => {
+    const [updatedRow] = await connection.query(`update notes set title=?,description=? where id =?`,[title,description,id])
+    const noOfAffectedRows = updatedRow.affectedRows
+    console.log("Number of affected rows:",noOfAffectedRows)
+    return updatedRow
+}
+
+
+
 // console.log(createNote('third note','random note'));
 
-module.exports= {getAllNotes,getSinglenote,createNote}
+module.exports= {getAllNotes,getSinglenote,createNote,deleteNote,updateNote}
