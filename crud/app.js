@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express();
 
-const {getAllProducts,getProduct,insertProduct} = require('./database')
+const {getAllProducts,getProduct,insertProduct,deleteProduct,updateProduct} = require('./database')
 
 
 app.use(express.json())
@@ -33,6 +33,24 @@ app.post('/products',async(req,res) => {
     res.send(product)
 })
 
+//delete products
+app.delete('/products/:id',async(req,res) => {
+    const product_id = req.params.id
+    const product = await deleteProduct(product_id)
+    res.send(product)
+})
+
+//update products
+app.post('/products/:id',async(req,res) => {
+    const product_id = req.params.id
+    const {name,desc,price} = req.body
+    const product = await updateProduct(product_id,name,desc,price)
+    res.send(product)
+})
+
+
 app.listen(3000,() => {
     console.log('Server is listening to port 3000.....')
 })
+
+

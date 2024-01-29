@@ -50,4 +50,23 @@ const insertProduct = async(name,desc,price) => {
     return getProduct(insertedId)
 }
 
-module.exports = {getAllProducts,getProduct,insertProduct}
+
+//delete product
+const deleteProduct = async(id) => {
+    const [deletedProduct] = await connection.query(`delete from products where product_id=?`,[id])
+    console.log(deletedProduct) 
+    return deletedProduct
+}
+
+
+//update product
+const updateProduct = async(id,name,desc,price) => {
+    const [updatedProduct] = await connection.query(`update products set product_name=?,product_desc=?,product_price=? where product_id=?`,[name,desc,price,id])
+    console.log(updatedProduct)
+    return updatedProduct
+}
+
+
+module.exports = {getAllProducts,getProduct,insertProduct,deleteProduct,updateProduct}
+
+
