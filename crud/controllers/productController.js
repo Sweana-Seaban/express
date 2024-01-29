@@ -18,20 +18,20 @@ const getSingleProduct = async(req,res) => {
 
 const createProduct = async(req,res) => {
     const {name,desc,price} = req.body
-    const product = await products.insertProduct(name,desc,price)
+    const product = await insertProduct(name,desc,price)
     res.send(product)
 }
 
 const modifyProduct = async(req,res) => {
     const product_id = req.params.id
     const {name,desc,price} = req.body
-    const product = await products.updateProduct(product_id,name,desc,price)
+    const product = await updateProduct(product_id,name,desc,price)
     res.send(product)
 }
 
 const removeProduct = async(req,res) => {
     const product_id = req.params.id
-    const product = await products.deleteProduct(product_id)
+    const product = await deleteProduct(product_id)
     res.send(product)
 }
 
