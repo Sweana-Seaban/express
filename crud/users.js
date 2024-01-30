@@ -51,7 +51,7 @@ User.sync({alter:true}).then(() =>{
 
     //creating instance using create method
     return User.create({
-        username:'jane',
+        username:'rene',
         password:'123',
         user_type:'buyer'
     });
@@ -60,22 +60,35 @@ User.sync({alter:true}).then(() =>{
     console.log('data after creation',data.toJSON());
 
     //update multiple fields of instance
-    data.set({
-        username:'carlisle',
-        password:'1234',
-        user_type:'seller'
-    });
-    data.save();
-    console.log('User updated');
-    console.log('data after updation',data.toJSON());
+    // data.set({
+    //     username:'carlisle',
+    //     password:'1234',
+    //     user_type:'seller'
+    // });
+    // data.save();
+    // console.log('User updated');
+    // console.log('data after updation',data.toJSON());
 
     //updating particular field of an instance
     // data.age = 24; 
     // data.save();
 
     //destroying an instance
-    data.destroy();
-    console.log('user destroyed');
+    // data.destroy();
+    // console.log('user destroyed');
+    
+
+    
+    data.username = 'edward';
+    console.log('after updation username is:',data.username);
+    return data;
+
+
+}).then(async(data) => {
+
+    //reloading an instance
+    await data.reload();
+    console.log('after reloading instance username is:',data.username);
     
 })
 .catch((err) => {
