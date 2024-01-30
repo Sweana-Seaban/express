@@ -70,16 +70,43 @@ User.sync({alter:true}).then(() => {
     //return User.findAll({offset:5,limit:5});
 
     //operators
-    return User.findAll({
-        where:{
-            [Sequelize.Op.or]:{
-                username:'rose',
-                age:25
-            }
-        }
-    });
+    // return User.findAll({
+    //     where:{
+    //         [Sequelize.Op.or]:{
+    //             username:'rose',
+    //             age:25
+    //         }
+    //     }
+    // });
+    // return User.findAll({
+    //     where:{
+    //         age:{
+    //             [Sequelize.Op.gt]:24
+    //         }
+    //     }
+    // })
+
+    //functions
+    // return User.findAll({where:
+    //     sequelize.where(sequelize.fn('char_length',sequelize.col('username')),6)
+    // });
+
+    //update table
+    // return User.update({username:'robin'},{
+    //     where:{username:'garret'}
+    // });
+
+    //delete using destroy
+    //return User.destroy({where:{username:'nicholas'}});
+
+    //delete using truncate
+    //return User.destroy({truncate:true})
+
+    //utility methods
+    return User.max('age'); //returning maximum age
 }).then((data) => {
-    data.forEach(element => {
-        console.log(element.toJSON());
-    });
+    // data.forEach(element => {
+    //     console.log(element.toJSON());
+    // });
+    console.log(data);
 })
