@@ -56,7 +56,7 @@ User.sync({alter:true}).then(() =>{
         user_type:'buyer'
     });
     
-}).then((data) => {
+}).then(async(data) => {
     console.log('data after creation',data.toJSON());
 
     //update multiple fields of instance
@@ -77,20 +77,33 @@ User.sync({alter:true}).then(() =>{
     // data.destroy();
     // console.log('user destroyed');
     
+    // data.username = 'edward';
+    // console.log('after updation username is:',data.username);
+    // return data;
 
-    
-    data.username = 'edward';
-    console.log('after updation username is:',data.username);
-    return data;
+    //saving only particular fields
+    // data.username='rose';
+    // data.user_type='seller';
+    // await data.decrement({'age':2})
+    // data.save({fields:['username','age']});
 
+    // await data.reload();
+    // console.log('data after updation',data.toJSON());
 
-}).then(async(data) => {
-
-    //reloading an instance
-    await data.reload();
-    console.log('after reloading instance username is:',data.username);
+    //incrementing integer values
+    data.username='rose';
+    data.user_type='seller';
+    await data.increment({age:5});
+    data.save();
     
 })
+// .then(async(data) => {
+
+//     //reloading an instance
+//     await data.reload();
+//     console.log('after reloading instance username is:',data.username);
+    
+// })
 .catch((err) => {
     console.log(err);
 });
