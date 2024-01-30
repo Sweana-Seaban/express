@@ -51,14 +51,17 @@ User.sync({alter:true}).then(() =>{
 
     //creating instance using create method
     return User.create({
-        username:'garret',
+        username:'theresa',
         password:'123',
-        age:25,
         user_type:'seller'
     });
 }).then((data) => {
     console.log(data.toJSON());
     console.log('User added to table');
+
+    //updating particular field of an instance
+    data.age = 24; 
+    data.save();
 })
 .catch((err) => {
     console.log(err);
