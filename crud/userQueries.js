@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize'); //mysql2 is internally imported by sequelize
 
+
 //create an instance of sequelize using connection parameters
 const sequelize = new Sequelize('express_crud','root','password',{
     dialect: 'mysql'
@@ -66,7 +67,17 @@ User.sync({alter:true}).then(() => {
     // });
 
     //offset
-    return User.findAll({offset:5,limit:5});
+    //return User.findAll({offset:5,limit:5});
+
+    //operators
+    return User.findAll({
+        where:{
+            [Sequelize.Op.or]:{
+                username:'rose',
+                age:25
+            }
+        }
+    });
 }).then((data) => {
     data.forEach(element => {
         console.log(element.toJSON());
