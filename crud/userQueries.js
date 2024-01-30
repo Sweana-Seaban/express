@@ -103,7 +103,24 @@ User.sync({alter:true}).then(() => {
     //return User.destroy({truncate:true})
 
     //utility methods
-    return User.max('age'); //returning maximum age
+    //return User.max('age'); //returning maximum age
+
+    //finder methods
+    //return User.findAll({raw:true});
+    //return User.findByPk(32); //find by primary key
+    //return User.findOne(); //fetches one row
+    // return User.findOne({where:{age:
+    //     {
+    //         [Sequelize.Op.or]:{
+    //             [Sequelize.Op.lt]:23,
+    //             [Sequelize.Op.eq]:null
+    //         }
+    //     }
+    // }});
+    //return User.findOrCreate({where:{username:'wick'}}); //fetches or creates a row
+    // return User.findOrCreate({where:{username:'ravz'},
+    // defaults:{age:29}}); //if that particular instance is not found then its created with the specified default values if any
+    return User.findAndCountAll({where:{username:'ravz'},raw:true});
 }).then((data) => {
     // data.forEach(element => {
     //     console.log(element.toJSON());
