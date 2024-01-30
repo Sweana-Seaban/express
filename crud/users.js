@@ -51,13 +51,13 @@ User.sync({alter:true}).then(() =>{
 
     //creating instance using create method
     return User.create({
-        username:'esme',
+        username:'jane',
         password:'123',
         user_type:'buyer'
     });
     
 }).then((data) => {
-    console.log(data.toJSON());
+    console.log('data after creation',data.toJSON());
 
     //update multiple fields of instance
     data.set({
@@ -67,13 +67,15 @@ User.sync({alter:true}).then(() =>{
     });
     data.save();
     console.log('User updated');
-    console.log(data.toJSON());
+    console.log('data after updation',data.toJSON());
 
     //updating particular field of an instance
     // data.age = 24; 
     // data.save();
 
-    
+    //destroying an instance
+    data.destroy();
+    console.log('user destroyed');
     
 })
 .catch((err) => {
