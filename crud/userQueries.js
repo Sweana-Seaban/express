@@ -15,7 +15,11 @@ sequelize.authenticate().then(() =>{
 const User = sequelize.define('user',{
     username:{
         type: Sequelize.DataTypes.STRING, //datatype
-        allowNull: false //null value
+        allowNull: false, //null value
+        get() {
+            const rawValue = this.getDataValue('username');
+            return rawValue.toUpperCase();
+        }
     },
     password:{
         type: Sequelize.DataTypes.STRING
@@ -108,7 +112,7 @@ User.sync({alter:true}).then(() => {
     //finder methods
     //return User.findAll({raw:true});
     //return User.findByPk(32); //find by primary key
-    //return User.findOne(); //fetches one row
+    return User.findOne(); //fetches one row
     // return User.findOne({where:{age:
     //     {
     //         [Sequelize.Op.or]:{
@@ -120,10 +124,10 @@ User.sync({alter:true}).then(() => {
     //return User.findOrCreate({where:{username:'wick'}}); //fetches or creates a row
     // return User.findOrCreate({where:{username:'ravz'},
     // defaults:{age:29}}); //if that particular instance is not found then its created with the specified default values if any
-    return User.findAndCountAll({where:{username:'ravz'},raw:true});
+    //return User.findAndCountAll({where:{username:'ravz'},raw:true});
 }).then((data) => {
     // data.forEach(element => {
     //     console.log(element.toJSON());
     // });
-    console.log(data);
+    console.log(data.username);
 })
