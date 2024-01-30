@@ -99,7 +99,7 @@ User.sync({alter:true}).then(() =>{
 })
 // .then(async(data) => {
 
-//     //reloading an instance
+//     reloading an instance
 //     await data.reload();
 //     console.log('after reloading instance username is:',data.username);
     
