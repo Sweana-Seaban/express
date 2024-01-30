@@ -59,11 +59,14 @@ User.sync({alter:true}).then(() => {
     //return User.findAll({order :[['age','desc']]});
 
     //grouping
-    return User.findAll({
-        attributes:['username',
-    [sequelize.fn('sum',sequelize.col('age')),'sum_age']],
-    group:'username'
-    });
+    // return User.findAll({
+    //     attributes:['username',
+    // [sequelize.fn('sum',sequelize.col('age')),'sum_age']],
+    // group:'username'
+    // });
+
+    //offset
+    return User.findAll({offset:5,limit:5});
 }).then((data) => {
     data.forEach(element => {
         console.log(element.toJSON());
