@@ -18,39 +18,52 @@ const User = sequelize.define('user',{
         type: Sequelize.DataTypes.STRING, //datatype
         allowNull: false, //null value
         //getter function - doesn't affect data that is inserted to table but only what is displayed
-        get() {
-            const rawValue = this.getDataValue('username'); //getDataValue is a Sequelize method
-            return rawValue.toUpperCase();
-        },
+        // get() {
+        //     const rawValue = this.getDataValue('username'); //getDataValue is a Sequelize method
+        //     return rawValue.toUpperCase();
+        // },
         
     },
     password:{
         type: Sequelize.DataTypes.STRING,
         //setter function - affects the way data is inserted to table
-        set(value){
-            const salt = bcrypt.genSaltSync(12); 
-            const hash = bcrypt.hashSync(value,salt);
-            this.setDataValue('password',hash);
-        }
+        // set(value){
+        //     const salt = bcrypt.genSaltSync(12); 
+        //     const hash = bcrypt.hashSync(value,salt);
+        //     this.setDataValue('password',hash);
+        // }
     },
     age:{
         type: Sequelize.DataTypes.INTEGER,
         defaultValue: 21,
+        //custom validator
+        validate:{
+            // isOldEnough(value){
+            //     if(value < 21){
+            //         throw new Error("too young")
+            //     }
+            // }
+
+            //customize error message
+            isNumeric:{
+                msg: 'You must enter a number!!'
+            }
+        }
     },
     user_type:{
         type: Sequelize.DataTypes.STRING
     },
     description:{
         type:Sequelize.DataTypes.STRING,
-        set(value){
-            const compressed = zlib.deflateSync(value).toString('base64');
-            this.setDataValue('description',compressed);
-        },
-        get(){
-            const value = this.getDataValue('description');
-            const uncompressed = zlib.inflateSync(Buffer.from(value,'base64'));
-            return uncompressed.toString();
-        }
+        // set(value){
+        //     const compressed = zlib.deflateSync(value).toString('base64');
+        //     this.setDataValue('description',compressed);
+        // },
+        // get(){
+        //     const value = this.getDataValue('description');
+        //     const uncompressed = zlib.inflateSync(Buffer.from(value,'base64'));
+        //     return uncompressed.toString();
+        // }
     },
     //virtual field - not present in table
     aboutUser:{
@@ -63,7 +76,8 @@ const User = sequelize.define('user',{
         type:Sequelize.DataTypes.STRING,
         unique:true, //unique constraint
         validate:{
-            isEmail:true
+            //isEmail:true
+            isIn:['abc@gmail.com','aed@gmail.com','we@gmail.com']
         }
     }
 });
@@ -169,12 +183,24 @@ User.sync({alter:true}).then(() => {
     // defaults:{age:29}}); //if that particular instance is not found then its created with the specified default values if any
     //return User.findAndCountAll({where:{username:'ravz'},raw:true});
 
+    // return User.create({
+    //     username:'edward carlisle',
+    //     password:'234',
+    //     email:'abcd',
+    //     user_type:'buyer',
+    //     description:'a really long description'
+    // })
+
+    //using validate()
+    // const user = User.build({email:'tom'});
+    // return user.validate();
+
     return User.create({
-        username:'edward carlisle',
-        password:'234',
-        email:'abcd',
-        user_type:'buyer',
-        description:'a really long description'
+        username:'fallon',
+        password:'12',
+        user_type:'seller',
+        age:'25gh',
+       //email:'we@gmail.com'
     })
 }).then((data) => {
     // data.forEach(element => {
@@ -183,5 +209,5 @@ User.sync({alter:true}).then(() => {
     // console.log(data.username);
     // console.log(data.password);
     // console.log(data.description);
-    console.log(data.toJSON());
+    console.log(data);
 })
