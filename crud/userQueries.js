@@ -58,6 +58,13 @@ const User = sequelize.define('user',{
         get(){
             return `${this.username} ${this.description}`;
         }
+    },
+    email:{
+        type:Sequelize.DataTypes.STRING,
+        unique:true, //unique constraint
+        validate:{
+            isEmail:true
+        }
     }
 });
 
@@ -148,7 +155,7 @@ User.sync({alter:true}).then(() => {
     //finder methods
     //return User.findAll({raw:true});
     //return User.findByPk(32); //find by primary key
-    return User.findOne({where:{username:'jasper'}}); //fetches one row
+    //return User.findOne({where:{username:'jasper'}}); //fetches one row
     // return User.findOne({where:{age:
     //     {
     //         [Sequelize.Op.or]:{
@@ -161,6 +168,14 @@ User.sync({alter:true}).then(() => {
     // return User.findOrCreate({where:{username:'ravz'},
     // defaults:{age:29}}); //if that particular instance is not found then its created with the specified default values if any
     //return User.findAndCountAll({where:{username:'ravz'},raw:true});
+
+    return User.create({
+        username:'edward carlisle',
+        password:'234',
+        email:'abcd',
+        user_type:'buyer',
+        description:'a really long description'
+    })
 }).then((data) => {
     // data.forEach(element => {
     //     console.log(element.toJSON());
@@ -168,5 +183,5 @@ User.sync({alter:true}).then(() => {
     // console.log(data.username);
     // console.log(data.password);
     // console.log(data.description);
-    console.log(data.aboutUser);
+    console.log(data.toJSON());
 })
