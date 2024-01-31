@@ -77,7 +77,7 @@ const User = sequelize.define('user',{
         unique:true, //unique constraint
         validate:{
             //isEmail:true
-            isIn:['abc@gmail.com','aed@gmail.com','we@gmail.com']
+            isIn:[['abc@gmail.com','aed@gmail.com','we@gmail.com']]
         }
     }
 });
@@ -199,8 +199,8 @@ User.sync({alter:true}).then(() => {
         username:'fallon',
         password:'12',
         user_type:'seller',
-        age:'25gh',
-       //email:'we@gmail.com'
+        age:24,
+       email:'we@gmail.com'
     })
 }).then((data) => {
     // data.forEach(element => {
