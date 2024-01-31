@@ -19,7 +19,7 @@ const User = sequelize.define('user',{
         allowNull: false, //null value
         //getter function - doesn't affect data that is inserted to table but only what is displayed
         get() {
-            const rawValue = this.getDataValue('username');
+            const rawValue = this.getDataValue('username'); //getDataValue is a Sequelize method
             return rawValue.toUpperCase();
         },
         
@@ -28,7 +28,7 @@ const User = sequelize.define('user',{
         type: Sequelize.DataTypes.STRING,
         //setter function - affects the way data is inserted to table
         set(value){
-            const salt = bcrypt.genSaltSync(12);
+            const salt = bcrypt.genSaltSync(12); 
             const hash = bcrypt.hashSync(value,salt);
             this.setDataValue('password',hash);
         }
