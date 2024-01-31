@@ -25,14 +25,14 @@ const createOrder = async(req,res) => {
 }
 
 //delete product
-const removeOrder = async(req,res) => {
+const removeOrder = (req,res) => {
     const id = req.params.id
     deleteOrder(id)
     res.status(200).send('Order Deleted successfully')
 }
 
 //update product
-const modifyOrder = async(req,res) => {
+const modifyOrder = (req,res) => {
     const id = req.params.id
     const {title,desc,amount} =req.body
     updateOrder(id,title,desc,amount)
