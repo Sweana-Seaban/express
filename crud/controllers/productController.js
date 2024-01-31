@@ -1,5 +1,5 @@
 // const products = require('../database')
-const {getAllProducts,getProduct,insertProduct,deleteProduct,updateProduct} = require('../database')
+const {getAllProducts,getProduct,insertProduct,deleteProduct,updateProduct} = require('../products')
 
 const homePage = (req,res) => {
     res.send('Welcome to Products Page')
