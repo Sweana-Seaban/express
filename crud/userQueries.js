@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize'); //mysql2 is internally imported by sequelize
-
+const bcrypt = require('bcrypt');
+const zlib = require('zlib');
 
 //create an instance of sequelize using connection parameters
 const sequelize = new Sequelize('express_crud','root','password',{
@@ -16,13 +17,21 @@ const User = sequelize.define('user',{
     username:{
         type: Sequelize.DataTypes.STRING, //datatype
         allowNull: false, //null value
+        //getter function - doesn't affect data that is inserted to table but only what is displayed
         get() {
             const rawValue = this.getDataValue('username');
             return rawValue.toUpperCase();
-        }
+        },
+        
     },
     password:{
-        type: Sequelize.DataTypes.STRING
+        type: Sequelize.DataTypes.STRING,
+        //setter function - affects the way data is inserted to table
+        set(value){
+            const salt = bcrypt.genSaltSync(12);
+            const hash = bcrypt.hashSync(value,salt);
+            this.setDataValue('password',hash);
+        }
     },
     age:{
         type: Sequelize.DataTypes.INTEGER,
@@ -30,11 +39,38 @@ const User = sequelize.define('user',{
     },
     user_type:{
         type: Sequelize.DataTypes.STRING
+    },
+    description:{
+        type:Sequelize.DataTypes.STRING,
+        set(value){
+            const compressed = zlib.deflateSync(value).toString('base64');
+            this.setDataValue('description',compressed);
+        },
+        get(){
+            const value = this.getDataValue('description');
+            const uncompressed = zlib.inflateSync(Buffer.from(value,'base64'));
+            return uncompressed.toString();
+        }
+    },
+    //virtual field - not present in table
+    aboutUser:{
+        type:Sequelize.DataTypes.VIRTUAL,
+        get(){
+            return `${this.username} ${this.description}`;
+        }
     }
 });
 
 
 User.sync({alter:true}).then(() => {
+    
+    //insert users
+    // return User.create({
+    //     username:'jasper',
+    //     password:'12',
+    //     user_type:'buyer',
+    //     description:'This is a really long description and it can be really long'
+    // })
     
     //select all users
     //return User.findAll();
@@ -112,7 +148,7 @@ User.sync({alter:true}).then(() => {
     //finder methods
     //return User.findAll({raw:true});
     //return User.findByPk(32); //find by primary key
-    return User.findOne(); //fetches one row
+    return User.findOne({where:{username:'jasper'}}); //fetches one row
     // return User.findOne({where:{age:
     //     {
     //         [Sequelize.Op.or]:{
@@ -129,5 +165,8 @@ User.sync({alter:true}).then(() => {
     // data.forEach(element => {
     //     console.log(element.toJSON());
     // });
-    console.log(data.username);
+    // console.log(data.username);
+    // console.log(data.password);
+    // console.log(data.description);
+    console.log(data.aboutUser);
 })
