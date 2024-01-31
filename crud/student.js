@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const {DataTypes} = require('sequelize');
+const {DataTypes,Op} = require('sequelize');
 
 const sequelize = new Sequelize('express_crud','root','password',{
     dialect:'mysql'
@@ -40,45 +40,33 @@ const Student = sequelize.define('student',{
 
 Student.sync({alter:true}).then(() => {
     console.log('Users table created successfully');
-    Student.bulkCreate([
-        {
-            name:'isabella',
-            school_year:2000
-        },
-        {
-            name:'edward',
-            school_year:2001
-        },
-        {
-            name:'charlie',
-            favourite_class:'design',
-            school_year:2002
-        },
-        {
-            name:'jacob',
-            school_year:2000
-        },
-        {
-            name:'carlisle',
-            favourite_class:'medicine',
-            school_year:2001,
-            subscribed_to_wittcode:false
-        },
-        {
-            name:'rene',
-            school_year:2000
-        },
-        {
-            name:'esme',
-            favourite_class:'design',
-            school_year:2002,
-            subscribed_to_wittcode:false
-        },
-        {
-            name:'charlotte',
-            school_year:2000
-        }
-    ],{validate:true});
-}).catch(() => {
+    // Student.bulkCreate([
+    //     {
+    //         name:'ethan hunt',
+    //         favourite_class:'electrical',
+    //         subscribed_to_wittcode:true,
+    //         school_year:2000
+    //     },
+    //     {
+    //         name:'harlot',
+    //         school_year:2001
+    //     },
+    // ],{validate:true});
+    // return Student.findAll( {attributes: ['name'],
+    //     where: {
+    //     [Op.or]:{
+    //         favourite_class:'Computer Science',
+    //         subscribed_to_wittcode:true
+    //     }}});
+    return Student.findAll({
+        attributes:['school_year',[sequelize.fn('COUNT',sequelize.col('school_year')),'num_students']],
+        group:'school_year'
+    })
+}).then((data) => {
+    data.forEach((element) => {
+        console.log(element.toJSON());
+    })
+})
+.catch(() => {
     console.log('Error in table creation');
 })
