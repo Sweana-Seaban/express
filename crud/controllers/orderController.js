@@ -1,5 +1,6 @@
 const {selectOrders,selectOrderById,insertOrder,deleteOrder,updateOrder} = require('../order')
 
+const { body } = require('express-validator')
 const homePage = (req,res) =>{
     res.send('Welcome to Orders Page')
 }
@@ -19,9 +20,16 @@ const displayById = async(req,res) => {
 
 //insert product
 const createOrder = async(req,res) => {
-    const {title,desc,amount} = req.body
-    const newOrder = await insertOrder(title,desc,amount)
-    res.status(200).send(newOrder)
+    const title = body('title');
+    if(!title.isEmpty()){
+        const {title,desc,amount} = req.body
+        const newOrder = await insertOrder(title,desc,amount)
+        res.status(200).send(newOrder)
+    }
+    else{
+        throw new Error("Order-title is empty")
+    }
+    
 }
 
 //delete product
